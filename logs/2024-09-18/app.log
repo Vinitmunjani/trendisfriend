@@ -1,0 +1,11 @@
+[E 240918 14:05:40 smartConnect:243] Error occurred while making a POST request to https://apiconnect.angelbroking.com/rest/auth/angelbroking/user/v1/loginByPassword. Error: Invalid totp. URL: https://apiconnect.angelbroking.com/rest/auth/angelbroking/user/v1/loginByPassword, Headers: {'Content-type': 'application/json', 'X-ClientLocalIP': '127.0.0.1', 'X-ClientPublicIP': '106.193.147.98', 'X-MACAddress': 'e4:a8:df:ec:85:34', 'Accept': 'application/json', 'X-PrivateKey': 'ek0xqpL4', 'X-UserType': 'USER', 'X-SourceID': 'WEB'}, Request: {'clientcode': 'V54420066', 'password': '1912', 'totp': '182347'}, Response: {'status': False, 'message': 'Invalid totp', 'errorcode': 'AB1050', 'data': None}
+[E 240918 14:07:18 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:07:20 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:07:20 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:07:21 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:08:01 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:08:33 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:08:34 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:08:35 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:08:36 utils:15] Invalid Token: The provided token is not valid.
+[E 240918 14:22:58 utils:16] Invalid Token: The provided token is not valid.

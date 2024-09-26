@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="vinit munjani">
+    <title>E.N.I.G.M.A - Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.5; }
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-container h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #00796b;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #00796b;
+            font-size: 24px;
+            text-align: center;
+        }
+        .login-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #004d40;
+            font-weight: bold;
+        }
+        .login-container input {
+            width: calc(100% - 20px); /* Adjust width to fit container with padding */
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #b2dfdb;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box; /* Ensures padding and borders are included in width */
+        }
+        .login-container input:focus {
+            border-color: #00796b;
+            outline: none;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        .login-container button:hover {
+            background-color: #004d40;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .login-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>E.N.I.G.M.A</h1>
+        <h2>Login</h2>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Predictor</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #e0f7fa; /* Light greenish background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #000; /* Dark grey for text */
+        }
+
+        h1 {
+            font-size: 48px;
+            text-align: center;
+            margin-top: 30px;
+            letter-spacing: 5px;
+            color: #00796b; /* Darker green for header */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            background-color: #fff; /* Softer light green background */
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 700px;
+            margin: 30px auto;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+        }
+
+        label, select, input {
+            display: block;
+            width: 100%;
+            color: #333;
+        }
+
+        .form-label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #5e5e5e; /* Slightly muted grey */
+        }
+
+        .form-select, .form-input {
+            background-color: #ffffff;
+            color: #333;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #b2dfdb;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .form-select:hover, .form-input:hover {
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Light green highlight */
+        }
+
+        /* Predict Stocks Button */
+        #run-button {
+            background-color: #00796b; /* Softer green for button */
+            color: white;
+            padding: 12px;
+            font-size: 18px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        #run-button:hover {
+            background-color: #003b34; /* Softer green for button */
+            /* Slightly darker green on hover */
+           
+        }
+
+        /* Trade History Button */
+        #results {
+            background-color: transparent; /* Light green for history button */
+            color: #000;
+            padding: 12px;
+            font-size: 18px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s;
+            border: 1px solid black;
+        }
+
+        #results:hover {
+            background-color: #151515; /* Darker green on hover */
+            
+            color: white;
+        }
+
+        /* Running message */
+        #running-message {
+            display: none;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #388e3c; /* Dark green */
+            animation: blink 1s linear infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Checkbox container */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-container label {
+            font-size: 14px;
+            margin-left: 5px;
+            color: #5e5e5e;
+        }
+
+        /* Available balance */
+        .balance-display {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #388e3c; /* Darker green for balance */
+        }
+
+        .error-message {
+            color: #e53935; /* Red for error message */
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .container {
+                padding: 30px;
+            }
+
+            #run-button, #results {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <script>
+        function toggleAmountInput() {
+            var useAllCheckbox = document.getElementById('use_all');
+            var manualAmountDiv = document.getElementById('manual_amount_div');
+            manualAmountDiv.style.display = useAllCheckbox.checked ? 'none' : 'block';
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            toggleAmountInput();
+        });
+
+        function showRunningMessage() {
+            document.getElementById('run-button').style.display = 'none';
+            document.getElementById('running-message').style.display = 'block';
+        }
+
+        function validateAmount() {
+            var availableCash = parseFloat(document.getElementById('available_cash').getAttribute('data-available-cash'));
+            var manualAmount = parseFloat(document.getElementById('manual_amount').value);
+            var errorMessage = document.getElementById('error-message');
+            
+            if (document.getElementById('manual_amount_div').style.display !== 'none') {
+                if (manualAmount > availableCash) {
+                    errorMessage.style.display = 'block';
+                    return false;
+                } else {
+                    errorMessage.style.display = 'none';
+                }
+            }
+
+            showRunningMessage();
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>E.N.I.G.M.A</h1>
+
+    <div class="container">
+        <form method="post" action="{% url 'predict_stocks' %}" onsubmit="return validateAmount()">
+            {% csrf_token %}
+
+            <!-- Expiry Date Dropdown -->
+            <div class="mb-3">
+                <label for="expiry" class="form-label">Choose an Expiry Date:</label>
+                <select name="expiry" id="expiry" class="form-select form-select-lg">
+                    {% for thursday in thursdays %}
+                        <option value="{{ thursday }}">{{ thursday }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Available Balance Display -->
+            <div class="balance-display" id="available_cash" data-available-cash="{{ available_cash }}">
+                Available Balance: ₹{{ available_cash }}
+            </div>
+
+            <!-- Checkbox for Using All Balance -->
+            <div class="checkbox-container">
+                <input type="checkbox" id="use_all" name="use_all" onchange="toggleAmountInput()" checked>
+                <label for="use_all">Utilize all available balance</label>
+            </div>
+
+            <!-- Manual Amount Input -->
+            <div id="manual_amount_div">
+                <label for="manual_amount" class="form-label">Enter Amount to Trade:</label>
+                <input type="number" id="manual_amount" name="manual_amount" step="0.01" placeholder="Enter amount" class="form-input">
+                <div id="error-message" class="error-message">Amount cannot exceed available balance!</div>
+            </div>
+
+            <!-- Predict Stocks Button -->
+            <button type="submit" id="run-button">Predict Stocks</button>
+            <span id="running-message">Running...</span>
+        </form>
+        
+        <form method="post" action="{% url 'results' %}">
+            {% csrf_token %}
+            <button type="submit" id="results">Trade History</button>
+        </form>
+    </div>
+</body>
+</html>

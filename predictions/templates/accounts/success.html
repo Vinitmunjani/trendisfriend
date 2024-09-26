@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .success-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .success-container h2 {
+            font-size: 32px;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+        .success-container p {
+            font-size: 18px;
+            color: #004d40;
+            margin-bottom: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #00796b;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button-container button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .button-container button:hover {
+            background-color: #004d40;
+        }
+        .button-container a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <h2>Login Successful</h2>
+        {% if client_id %}
+            <p>Welcome, {{ client_name }}! Your client ID is: <strong>{{ client_id }}</strong></p>
+            {% if client_balance %}
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+                {% for key, value in client_balance.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        {% else %}
+            <p>Welcome! You do not have a client ID associated with your account.</p>
+        {% endif %}
+        
+        <div class="button-container">
+            <button>
+                <a href="{% url 'logout' %}">Logout</a>
+            </button>
+            <button>
+                <a href="{% url 'home' %}">Home</a>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
